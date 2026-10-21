@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BioFrame Sizer | studiobiomec × Macchi Cicli</title>
+    <style>
+        :root {
+            --bg-deep: #0B132B;
+            --card-bg: #1C2541;
+            --accent-blue: #00F0FF;
+            --accent-blue-hover: #00ADB5;
+            --text-main: #FFFFFF;
+            --text-muted: #8D99AE;
+            --border-color: #3A506B;
+            --error-red: #FF4D4D;
+            --btn-reset-bg: #3A506B;
+            --btn-reset-hover: #4B6584;
+            --btn-pdf-bg: #10B981;
+            --btn-pdf-hover: #059669;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 8px;
+        }
+
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.4));
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            text-transform: uppercase;
+        }
+
+        .logo-text h1 span {
+            color: var(--accent-blue);
+        }
+
+        .logo-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .document-validity {
+            font-size: 0.75rem;
+            color: var(--accent-blue);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 12px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .required::after {
+            content: " *";
+            color: var(--error-red);
+            font-weight: bold;
+        }
+
+        input, select {
+            background-color: var(--bg-deep);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+            -webkit-appearance: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 5px rgba(0, 240, 255, 0.3);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn-calculate, .btn-reset, .btn-pdf {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .btn-calculate {
+            width: 100%;
+            background-color: var(--accent-blue);
+            color: var(--bg-deep);
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-calculate:hover {
+            background-color: var(--accent-blue-hover);
+        }
+
+        .btn-reset {
+            width: 100%;
+            background-color: var(--btn-reset-bg);
+            color: var(--text-main);
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-reset:hover {
+            background-color: var(--btn-reset-hover);
+        }
+
+        .btn-pdf {
+            width: 100%;
+            background-color: var(--btn-pdf-bg);
+            color: var(--text-main);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+
+        .btn-pdf:hover {
+            background-color: var(--btn-pdf-hover);
+        }
+
+        .btn-calculate:active, .btn-reset:active, .btn-pdf:active {
+            transform: scale(0.98);
+        }
+
+        .results-card {
+            display: none;
+            border-color: var(--accent-blue);
+        }
+
+        .result-section-title {
+            font-size: 0.9rem;
+            color: var(--accent-blue);
+            margin: 14px 0 6px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(58, 80, 107, 0.4);
+            font-size: 0.95rem;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: var(--text-muted);
+        }
+
+        .result-value {
+            font-weight: 600;
+            color: var(--accent-blue);
+            text-align: right;
+        }
+
+        .client-summary {
+            background-color: var(--bg-deep);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .client-summary span {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .disclaimer-box {
+            background-color: rgba(11, 19, 43, 0.6);
+            border-left: 3px solid var(--accent-blue);
+            padding: 12px 14px;
+            margin-top: 18px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: var(--text-muted);
+        }
+
+        .disclaimer-box strong {
+            color: var(--text-main);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+
+        @media print {
+            body {
+                background-color: #FFFFFF !important;
+                color: #000000 !important;
+                padding: 0;
+            }
+            .card:not(#resultsCard), .button-group, .btn-pdf, footer {
+                display: none !important;
+            }
+            header {
+                margin-bottom: 15px !important;
+            }
+            .logo-subtitle {
+                color: #333 !important;
+            }
+            .document-validity {
+                color: #000 !important;
+                font-weight: bold !important;
+            }
+            .results-card {
+                display: block !important;
+                border: 2px solid #000 !important;
+                background-color: #FFFFFF !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0;
+                padding: 15px;
+            }
+            .results-card h2 {
+                color: #000 !important;
+                border-bottom: 2px solid #000 !important;
+            }
+            .result-section-title {
+                color: #000 !important;
+                border-bottom: 1px solid #000 !important;
+                padding-bottom: 2px;
+            }
+            .client-summary {
+                background-color: #F8F9FA !important;
+                border: 1px solid #CCC !important;
+                color: #000 !important;
+            }
+            .client-summary span, .result-value {
+                color: #000 !important;
+            }
+            .result-label {
+                color: #333 !important;
+            }
+            .result-item {
+                border-bottom: 1px solid #DDD !important;
+            }
+            .disclaimer-box {
+                background-color: #F8F9FA !important;
+                border-left: 3px solid #000 !important;
+                color: #333 !important;
+                border-top: 1px solid #DDD;
+            }
+            .disclaimer-box strong {
+                color: #000 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo-box">
+                <svg class="logo-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100" height="100" rx="28" fill="#1C2541"/>
+                    <rect x="2" y="2" width="96" height="96" rx="26" stroke="#00F0FF" stroke-width="3" stroke-opacity="0.6"/>
+                    <text x="44" y="68" font-family="Inter, sans-serif" font-weight="800" font-size="62" fill="#FFFFFF" text-anchor="middle">B</text>
+                    <text x="58" y="70" font-family="Inter, sans-serif" font-weight="800" font-size="58" fill="#00F0FF" fill-opacity="0.9" text-anchor="middle">S</text>
+                </svg>
+                <div class="logo-text" style="text-align: left;">
+                    <h1>BioFrame <span>Sizer</span></h1>
+                </div>
+            </div>
+            <div class="logo-subtitle">studiobiomec × Macchi Cicli</div>
+            <div class="document-validity">Documento con validità 30 giorni dall'emissione</div>
+        </header>
+
+        <div id="bioFormContainer">
+            <div class="card">
+                <h2>1. Dati Anagrafici e Contatto</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="dataVisita" class="required">Data</label>
+                        <input type="date" id="dataVisita">
+                    </div>
+                    <div class="form-group">
+                        <label for="eta" class="required">Età (anni)</label>
+                        <input type="number" id="eta" placeholder="es. 45">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="nome" class="required">Nome e Cognome</label>
+                        <input type="text" id="nome" placeholder="es. Mario Rossi">
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono" class="required">Telefono</label>
+                        <input type="tel" id="telefono" placeholder="es. 3331234567">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="required">Email</label>
+                        <input type="email" id="email" placeholder="es. m.rossi@email.it">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>2. Dati Antropometrici e Assetto (mm)</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="genere" class="required">Genere</label>
+                        <select id="genere">
+                            <option value="uomo">Uomo</option>
+                            <option value="donna">Donna</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="disciplina" class="required">Disciplina</label>
+                        <select id="disciplina">
+                            <option value="strada">Strada (Road)</option>
+                            <option value="gravel">Gravel</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="altezza" class="required">Altezza (mm)</label>
+                        <input type="number" id="altezza" placeholder="es. 1780">
+                    </div>
+                    <div class="form-group">
+                        <label for="cavallo" class="required">Cavallo (mm)</label>
+                        <input type="number" id="cavallo" placeholder="es. 850">
+                    </div>
+                    <div class="form-group">
+                        <label for="spalle">Larghezza Spalle (mm)</label>
+                        <input type="number" id="spalle" placeholder="es. 400 (facoltativo)">
+                    </div>
+                    <div class="form-group">
+                        <label for="ischiatiche">Ossa Ischiatiche (mm)</label>
+                        <input type="number" id="ischiatiche" placeholder="es. 120 (facoltativo)">
+                    </div>
+                    <div class="form-group">
+                        <label for="bacino">Inclinazione Bacino (°)</label>
+                        <input type="number" id="bacino" placeholder="es. 35 (facoltativo)">
+                    </div>
+                    <div class="form-group">
+                        <label for="touchtoe" class="required">Test Mobilità (Touch-Toe)</label>
+                        <select id="touchtoe">
+                            <option value="pavimento">Arrivo al pavimento</option>
+                            <option value="caviglie" selected>Arrivo alle caviglie</option>
+                            <option value="ginocchia">Arrivo alle ginocchia</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn-calculate" id="btnCalcola">Calcola Geometrie</button>
+                <button type="button" class="btn-reset" id="btnReset">Reset</button>
+            </div>
+        </div>
+
+        <div class="card results-card" id="resultsCard">
+            <h2>3. Output Tecnico & Riepilogo</h2>
+            <div class="client-summary" id="clientSummaryText"></div>
+            
+            <div class="result-section-title">Geometria Telaio & Componenti</div>
+            <div class="result-item">
+                <span class="result-label">Tubo Orizzontale Virtuale (TOV):</span>
+                <span class="result-value" id="resTOV">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Tipologia Telaio & S/R Target:</span>
+                <span class="result-value" id="resTelaio">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Larghezza Curva Manubrio (C-C):</span>
+                <span class="result-value" id="resManubrio">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Lunghezza Pedivelle Consigliata:</span>
+                <span class="result-value" id="resPedivelle">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Larghezza Sella & Categoria:</span>
+                <span class="result-value" id="resSellaLarghezza">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Foro Centrale / Scarico Sella:</span>
+                <span class="result-value" id="resSellaForo">-</span>
+            </div>
+
+            <div class="result-section-title">Assetto Sella & Cockpit (Centro Anatomico)</div>
+            <div class="result-item">
+                <span class="result-label">Altezza Sella (Centro Anatomico):</span>
+                <span class="result-value" id="resAltezzaSella">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Arretramento Sella (Centro Anatomico):</span>
+                <span class="result-value" id="resArretramentoSella">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Distanza Sella-Manubrio (Centro Anat.):</span>
+                <span class="result-value" id="resSellaManubrio">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Dislivello Sella-Manubrio (Value C):</span>
+                <span class="result-value" id="resDislivello">-</span>
+            </div>
+
+            <div class="disclaimer-box">
+                <strong>Note Tecniche e Limitazione di Responsabilità:</strong> I dati riportati in questo documento costituiscono una stima preliminare di posizionamento geometrico e dimensionale, basata su algoritmi antropometrici e test di mobilità funzionale. Tali valori rappresentano un punto di partenza ottimale ma <strong>devono essere necessariamente verificati, validati e perfezionati attraverso un test di bike fitting dinamico</strong> (videoanalisi e motion tracking in sella) eseguito da personale qualificato di STUDIOBIOMEC in collaborazione con Macchi Cicli. STUDIOBIOMEC e Macchi Cicli declinano ogni responsabilità per eventuali disagi fisici o variazioni prestazionali derivanti dall'adozione di tali quote in assenza di un riscontro dinamico personalizzato.
+            </div>
+
+            <button type="button" class="btn-pdf" id="btnPdf">Salva / Stampa PDF</button>
+        </div>
+
+        <footer>
+            &copy; 2026 STUDIOBIOMEC. Tutti i diritti riservati.
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dataVisitaInput = document.getElementById('dataVisita');
+            if (dataVisitaInput) {
+                dataVisitaInput.valueAsDate = new Date();
+            }
+
+            const btnCalcola = document.getElementById('btnCalcola');
+            if (btnCalcola) {
+                btnCalcola.addEventListener('click', () => {
+                    calcolaGeometrie();
+                });
+            }
+
+            const btnReset = document.getElementById('btnReset');
+            if (btnReset) {
+                btnReset.addEventListener('click', resetFormulario);
+            }
+
+            const btnPdf = document.getElementById('btnPdf');
+            if (btnPdf) {
+                btnPdf.addEventListener('click', () => {
+                    window.scrollTo(0, 0);
+                    setTimeout(() => {
+                        window.print();
+                    }, 300);
+                });
+            }
+
+            const container = document.getElementById('bioFormContainer');
+            if (container) {
+                container.addEventListener('input', nascondiRisultati);
+                container.addEventListener('change', nascondiRisultati);
+            }
+        });
+
+        function nascondiRisultati() {
+            const cardRes = document.getElementById('resultsCard');
+            if (cardRes) {
+                cardRes.style.display = 'none';
+            }
+        }
+
+        function arrotondaStandard(valore, arrayStandard) {
+            return arrayStandard.reduce((prev, curr) => 
+                Math.abs(curr - valore) < Math.abs(prev - valore) ? curr : prev
+            );
+        }
+
+        function calcolaGeometrie() {
+            const dataVisita = document.getElementById('dataVisita').value;
+            const nome = document.getElementById('nome').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            const eta = parseFloat(document.getElementById('eta').value);
+            const altezza = parseFloat(document.getElementById('altezza').value);
+            const cavallo = parseFloat(document.getElementById('cavallo').value);
+            
+            const spalleInput = document.getElementById('spalle').value;
+            const ischiaticheInput = document.getElementById('ischiatiche').value;
+            const bacinoInput = document.getElementById('bacino').value;
+
+            const spalle = spalleInput !== "" ? parseFloat(spalleInput) : null;
+            const ischiatiche = ischiaticheInput !== "" ? parseFloat(ischiaticheInput) : null;
+            const bacino = bacinoInput !== "" ? parseFloat(bacinoInput) : null;
+
+            const genere = document.getElementById('genere').value;
+            const disciplina = document.getElementById('disciplina').value;
+            const touchtoe = document.getElementById('touchtoe').value;
+
+            if (!dataVisita || !nome || !telefono || !email || isNaN(eta) || isNaN(altezza) || isNaN(cavallo)) {
+                alert('Compila tutti i campi obbligatori contrassegnati con l\'asterisco rosso (*).');
+                return;
+            }
+
+            let fattoreFlex = 1.0;
+            if (touchtoe === 'caviglie') {
+                fattoreFlex = 0.96;
+            } else if (touchtoe === 'ginocchia') {
+                fattoreFlex = 0.92;
+            }
+
+            const coefficienteTOV = (genere === 'uomo') ? 0.31 : 0.307;
+            const tov = Math.round(altezza * coefficienteTOV);
+
+            let tipoTelaio = "";
+            let srRange = "";
+
+            if (disciplina === 'strada') {
+                if (touchtoe === 'pavimento') {
+                    tipoTelaio = "Strada Race (Aggressivo)";
+                    srRange = "S/R 1.35 – 1.42";
+                } else if (touchtoe === 'caviglie') {
+                    tipoTelaio = "Strada Endurance Intermedio";
+                    srRange = "S/R 1.43 – 1.50";
+                } else {
+                    tipoTelaio = "Strada Endurance Comfort";
+                    srRange = "S/R 1.51 – 1.56";
+                }
+            } else {
+                if (touchtoe === 'pavimento') {
+                    tipoTelaio = "Gravel Race / Performance";
+                    srRange = "S/R 1.45 – 1.50";
+                } else if (touchtoe === 'caviglie') {
+                    tipoTelaio = "Gravel Standard (Equilibrato)";
+                    srRange = "S/R 1.51 – 1.58 (Target 1.55)";
+                } else {
+                    tipoTelaio = "Gravel Relax / Esplorativo";
+                    srRange = "S/R 1.59 – 1.65+";
+                }
+            }
+
+            let etichettaManubrio = "Non calcolabile (Inserire larghezza spalle)";
+            if (spalle !== null && !isNaN(spalle)) {
+                let baseManubrio = (disciplina === 'gravel') ? spalle + 20 : spalle;
+                const standardManubrio = [380, 400, 420, 440];
+                const manubrioConsigliato = arrotondaStandard(baseManubrio, standardManubrio);
+                etichettaManubrio = `${manubrioConsigliato} mm (${disciplina.toUpperCase()})`;
+            }
+
+            let pedivella = 170;
+            if (genere === 'uomo') {
+                if (cavallo <= 780) pedivella = 165;
+                else if (cavallo <= 830) pedivella = 170;
+                else if (cavallo <= 870) pedivella = 172.5;
+                else pedivella = 175;
+            } else {
+                if (cavallo <= 770) pedivella = 165;
+                else if (cavallo <= 810) pedivella = 165;
+                else if (cavallo <= 850) pedivella = 170;
+                else if (cavallo <= 890) pedivella = 170;
+                else pedivella = 172.5;
+            }
+
+            let sellaLarghezzaText = "Dato non inserito";
+            if (ischiatiche !== null && !isNaN(ischiatiche)) {
+                let catSella = "";
+                let rangeSella = "";
+                if (ischiatiche < 110) {
+                    catSella = "Stretta";
+                    rangeSella = "128 - 134 mm";
+                } else if (ischiatiche <= 130) {
+                    catSella = "Media";
+                    rangeSella = "135 - 144 mm";
+                } else {
+                    catSella = "Larga";
+                    rangeSella = "145 - 152 mm";
+                }
+                sellaLarghezzaText = `${catSella} (${rangeSella})`;
+            }
+
+            let foroDesc = "Dato non inserito";
+            if (bacino !== null && !isNaN(bacino)) {
+                if (bacino < 30) {
+                    foroDesc = "Nessun foro (Sella Chiusa)";
+                } else if (bacino <= 45) {
+                    foroDesc = "Canale di scarico leggero (Valutabile)";
+                } else {
+                    foroDesc = "Foro centrale / Canale fondamentale";
+                }
+            }
+
+            const fattoreBaseSella = (disciplina === 'strada') ? 0.885 : 0.881;
+            const altezzaSellaBase = cavallo * fattoreBaseSella;
+            const deltaPedivella = pedivella - 170;
+            const altezzaSellaFinale = Math.round(altezzaSellaBase - deltaPedivella);
+
+            const arretramentoFinale = Math.round(altezzaSellaFinale * 0.285);
+
+            const coeffManubrio = (genere === 'uomo') ? 0.3263 : 0.312;
+            const distanzaManubrioBase = altezza * coeffManubrio;
+            const distanzaSellaManubrioFinale = Math.round((distanzaManubrioBase * fattoreFlex) + 95);
+
+            const coeffDislivello = (disciplina === 'strada') ? 0.0505 : 0.0331;
+            const dislivelloBase = altezza * coeffDislivello;
+            const coeffGenereDislivello = (genere === 'donna') ? 0.95 : 1.0;
+            const dislivelloFinale = Math.round(dislivelloBase * coeffGenereDislivello * fattoreFlex);
+
+            document.getElementById('clientSummaryText').innerHTML = `
+                <strong>Cliente:</strong> <span>${nome} (${eta} anni)</span><br>
+                <strong>Contatti:</strong> <span>Tel: ${telefono || 'N/D'} | Email: ${email || 'N/D'}</span><br>
+                <strong>Data Consulenza:</strong> <span>${dataVisita}</span>
+            `;
+
+            document.getElementById('resTOV').innerText = `${tov} mm`;
+            document.getElementById('resTelaio').innerText = `${tipoTelaio} [${srRange}]`;
+            document.getElementById('resManubrio').innerText = etichettaManubrio;
+            document.getElementById('resPedivelle').innerText = `${pedivella} mm`;
+            document.getElementById('resSellaLarghezza').innerText = sellaLarghezzaText;
+            document.getElementById('resSellaForo').innerText = foroDesc;
+
+            document.getElementById('resAltezzaSella').innerText = `${altezzaSellaFinale} mm (da Centro Anatomico)`;
+            document.getElementById('resArretramentoSella').innerText = `${arretramentoFinale} mm (da Centro Anatomico)`;
+            document.getElementById('resSellaManubrio').innerText = `${distanzaSellaManubrioFinale} mm (da Centro Anatomico)`;
+            document.getElementById('resDislivello').innerText = `${dislivelloFinale} mm (Piano Sella – Manubrio)`;
+
+            const cardRes = document.getElementById('resultsCard');
+            cardRes.style.display = 'block';
+            cardRes.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetFormulario() {
+            const inputs = document.querySelectorAll('input:not([type="date"])');
+            inputs.forEach(input => input.value = '');
+            const dateInput = document.getElementById('dataVisita');
+            if (dateInput) dateInput.valueAsDate = new Date();
+            nascondiRisultati();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
